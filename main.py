@@ -2,6 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 
 load_dotenv()
@@ -19,8 +20,12 @@ def get_agent_response(prompt, model="gemini-2.0-flash-001"):
     )
 
 
-def run(prompt):
-    text, ptokens, rtokens = get_agent_response(prompt)
+def run(user_prompt):
+    messages = [
+        types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+    ]
+
+    text, ptokens, rtokens = get_agent_response(messages)
     print(text)
     print(f"Prompt tokens: {ptokens}")
     print(f"Response tokens: {rtokens}")
