@@ -1,6 +1,7 @@
 import unittest
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
+from functions.run_python_file import run_python_file
 from functions.write_file import write_file
 
 
@@ -56,6 +57,28 @@ class TestFileWrite(unittest.TestCase):
 
     def test_outside(self):
         result = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+        print(result)
+        self.assertTrue(result.startswith("Error:"), f"Expected error, got valid result:\n{result}")
+
+
+class TestFileRun(unittest.TestCase):
+    def test_main(self):
+        result = run_python_file("calculator", "main.py")
+        print(result)
+        self.assertFalse(result.startswith("Error:"), f"Expected valid result, got:\n{result}")
+
+    def test_test(self):
+        result = run_python_file("calculator", "tests.py")
+        print(result)
+        self.assertFalse(result.startswith("Error:"), f"Expected valid result, got:\n{result}")
+
+    def test_outside(self):
+        result = run_python_file("calculator", "../main.py")
+        print(result)
+        self.assertTrue(result.startswith("Error:"), f"Expected error, got valid result:\n{result}")
+
+    def test_not_found(self):
+        result = run_python_file("calculator", "nonexistent.py")
         print(result)
         self.assertTrue(result.startswith("Error:"), f"Expected error, got valid result:\n{result}")
 
