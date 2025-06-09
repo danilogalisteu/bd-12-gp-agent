@@ -1,6 +1,7 @@
 import unittest
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
+from functions.write_file import write_file
 
 
 class TestFilesInfo(unittest.TestCase):
@@ -25,7 +26,7 @@ class TestFilesInfo(unittest.TestCase):
         self.assertTrue(info.startswith("Error:"), f"Expected error, got valid directory info:\n{info}")
 
 
-class TestFileContent(unittest.TestCase):
+class TestFileRead(unittest.TestCase):
     def test_cwd(self):
         content = get_file_content("calculator", "main.py")
         print(content)
@@ -40,6 +41,23 @@ class TestFileContent(unittest.TestCase):
         content = get_file_content("calculator", "/bin/cat")
         print(content)
         self.assertTrue(content.startswith("Error:"), f"Expected error, got valid content:\n{content}")
+
+
+class TestFileWrite(unittest.TestCase):
+    def test_cwd(self):
+        result = write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum")
+        print(result)
+        self.assertFalse(result.startswith("Error:"), f"Expected valid result, got:\n{result}")
+
+    def test_relative(self):
+        result = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
+        print(result)
+        self.assertFalse(result.startswith("Error:"), f"Expected valid result, got:\n{result}")
+
+    def test_outside(self):
+        result = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+        print(result)
+        self.assertTrue(result.startswith("Error:"), f"Expected error, got valid result:\n{result}")
 
 
 if __name__ == "__main__":
