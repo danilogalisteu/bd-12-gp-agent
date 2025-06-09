@@ -6,12 +6,13 @@ def get_files_info(working_directory, directory=None):
     if not os.path.isdir(wd):
         return f'Error: "{wd}" is not a directory'
 
-    cd = os.path.abspath(os.path.join(working_directory, directory)) if directory else wd
+    directory = directory if directory else "."
+    cd = os.path.abspath(os.path.join(working_directory, directory))
     if not os.path.isdir(cd):
-        return f'Error: "{cd}" is not a directory'
+        return f'Error: "{directory}" is not a directory'
 
     if not cd.startswith(wd):
-        return f'Error: Cannot list "{cd}" as it is outside the permitted working directory'
+        return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
 
     files_info = []
     try:

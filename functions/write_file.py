@@ -8,11 +8,11 @@ def write_file(working_directory, file_path, content):
 
     fp = os.path.abspath(os.path.join(working_directory, file_path))
     if not fp.startswith(wd):
-        return f'Error: Cannot write "{fp}" as it is outside the permitted working directory'
+        return f'Error: Cannot write "{file_path}" as it is outside the permitted working directory'
 
     try:
         with open(fp, "w") as f:
             f.write(content)
-            return f'Successfully wrote to "{fp}" ({len(content)} characters written)'
+            return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
     except Exception as e:
         return f"Error: {e}"

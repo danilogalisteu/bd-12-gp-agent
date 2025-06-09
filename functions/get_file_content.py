@@ -10,10 +10,10 @@ def get_file_content(working_directory, file_path):
 
     fp = os.path.abspath(os.path.join(working_directory, file_path))
     if not os.path.isfile(fp):
-        return f'Error: File not found or is not a regular file: "{fp}"'
+        return f'Error: File not found or is not a regular file: "{file_path}"'
 
     if not fp.startswith(wd):
-        return f'Error: Cannot read "{fp}" as it is outside the permitted working directory'
+        return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
 
     try:
         with open(fp, "r") as f:
