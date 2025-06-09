@@ -20,15 +20,18 @@ def get_agent_response(prompt, model="gemini-2.0-flash-001"):
     )
 
 
-def run(user_prompt):
+def run(user_prompt, verbose=False):
     messages = [
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
     text, ptokens, rtokens = get_agent_response(messages)
     print(text)
-    print(f"Prompt tokens: {ptokens}")
-    print(f"Response tokens: {rtokens}")
+
+    if verbose:
+        print(f"User prompt: {user_prompt}")
+        print(f"Prompt tokens: {ptokens}")
+        print(f"Response tokens: {rtokens}")
 
 
 if __name__ == "__main__":
@@ -36,4 +39,7 @@ if __name__ == "__main__":
         print("Usage: python main.py '<prompt>'")
         sys.exit(1)
 
-    run(sys.argv[1])
+    verbose = "--verbose" in sys.argv[1:]
+    if verbose:
+        sys.argv.remove("--verbose")
+    run(sys.argv[1], verbose=verbose)
