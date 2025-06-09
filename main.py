@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import load_dotenv
 from google import genai
 
@@ -18,8 +19,16 @@ def get_agent_response(prompt, model="gemini-2.0-flash-001"):
     )
 
 
-text, ptokens, rtokens = get_agent_response("Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.")
+def run(prompt):
+    text, ptokens, rtokens = get_agent_response(prompt)
+    print(text)
+    print(f"Prompt tokens: {ptokens}")
+    print(f"Response tokens: {rtokens}")
 
-print(text)
-print(f"Prompt tokens: {ptokens}")
-print(f"Response tokens: {rtokens}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python main.py '<prompt>'")
+        sys.exit(1)
+
+    run(sys.argv[1])
