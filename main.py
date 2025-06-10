@@ -3,14 +3,19 @@ from model import get_model_response
 
 
 def run(user_prompt, verbose=False):
-    text, ptokens, rtokens = get_model_response(user_prompt)
-    print(text)
+    response = get_model_response(user_prompt)
+
+    print(response.text)
+
+    if response.function_calls:
+        for call in response.function_calls:
+            print(f"Calling function: {call.name}({call.args})")
 
     if verbose:
         print(f"User prompt: {user_prompt}")
-        print(f"Prompt tokens: {ptokens}")
-        print(f"Response tokens: {rtokens}")
-
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+ 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

@@ -25,20 +25,11 @@ All paths you provide should be relative to the working directory. You do not ne
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
-    response = client.models.generate_content(
+    return client.models.generate_content(
         model=model,
         contents=messages,
         config=types.GenerateContentConfig(
             tools=[available_functions],
             system_instruction=system_prompt,
         ),
-    )
-
-    for call in response.function_calls:
-        print(f"Calling function: {call.name}({call.args})")
-
-    return (
-        response.text,
-        response.usage_metadata.prompt_token_count,
-        response.usage_metadata.candidates_token_count,
     )
