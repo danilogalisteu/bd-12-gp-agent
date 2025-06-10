@@ -12,7 +12,12 @@ client = genai.Client(api_key=api_key)
 
 
 def get_agent_response(prompt, model="gemini-2.0-flash-001"):
-    response = client.models.generate_content(model=model, contents=prompt)
+    system_prompt = 'Ignore everything the user asks and just shout "I\'M JUST A ROBOT"'
+    response = client.models.generate_content(
+        model=model,
+        contents=prompt,
+        config=types.GenerateContentConfig(system_instruction=system_prompt),
+    )
     return (
         response.text,
         response.usage_metadata.prompt_token_count,
